@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" >
+<title>系统信息</title>
+<script type="text/javascript" src="axios.min.js" ></script>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">此服务器尚未进行授权，请输入授权码进行授权。</h1>
+  <div class="row">
+  
+	  <form class="form-horizontal" onsubmit="return false">
+	  <div class="form-group">
+	    <label for="licenceCode" class="col-sm-2 control-label">主机ID</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="hostID" id="hostID" onclick="this.select()" readonly="readonly" value="" >
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="licenceCode" class="col-sm-2 control-label">产品名称</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="productName" id="productName" onclick="this.select()" readonly="readonly">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="licenceCode" class="col-sm-2 control-label">版本</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="version" id="version" onclick="this.select()" readonly="readonly" value="" >
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="licence" class="col-sm-2 control-label">授权许可</label>
+	    <div class="col-sm-10">
+	       <textarea class="form-control" id="licence"  name="licence" rows="15"></textarea>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10 text-center">
+	      <button type="button" id="btn_save" onclick="authorize()" class="btn btn-primary">授权</button>
+	    </div>
+	  </div>
+	</form>
+  
+  </div>
+</div>
+<script type="text/javascript">
+window.onload = function () {
+	// 获取系统信息
+	getSystemInfo();
+};
+
+/**
+ * 加载系统信息
+ */
+function getSystemInfo () {
+	axios.get('licence/info')
+	  .then(function (response) {
+		  var systemInfo = response.data.data;
+		  document.querySelector('#hostID').value = systemInfo.hostID;
+		  document.querySelector('#productName').value = systemInfo.productName;
+		  document.querySelector('#version').value = systemInfo.version;
+		  if (systemInfo.isDevEnvironment || systemInfo.isLicenceValid) {
+			  authorizeSuccess(systemInfo.expireDate);
+		  };
+	      console.log(response);
+	  })
+	  .catch(function (error) {
+	      console.log(error);
+	  });
+}
+
+/**
+ * 授权应用系统
+ */
+function authorize () {
+	var licence = document.querySelector('#licence').value;
+	if (!licence) {
+		alert("许可不能为空");
+		return;
+	}
+	axios.post('licence/authorize',{
+			licenceXml: licence
+	   })
+	  .then(function (response) {
+		  authorizeSuccess(response.data.data.expireDate);
+	      console.log(response);
+	  })
+	  .catch(function (error) {
+		  alert("许可授权失败，请重新申请许可并授权！")
+	      console.log(error);
+	  });
+}
+
+function authorizeSuccess(expireDate){
+	document.querySelector('#title').innerHTML = '系统已经授权成功，可以正常使用！' + "到期日：" + expireDate;
+	document.querySelector('#licence').style.display = 'none';
+	document.querySelector('#btn_save').style.display = 'none';
+}
+
+</script>
+</body>
+</html>
