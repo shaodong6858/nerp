@@ -1,0 +1,8 @@
+target/
+.externalToolBuilders/
+log_path_IS_UNDEFINED/
+.classpath
+.project
+.project
+.settings
+.idea
