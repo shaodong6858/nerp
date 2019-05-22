@@ -3,7 +3,7 @@
   <parent>
     <groupId>cn.gs</groupId>
     <artifactId>nerp</artifactId>
-    <version>1.0.1-SNAPSHOTS</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>test</artifactId>
   
