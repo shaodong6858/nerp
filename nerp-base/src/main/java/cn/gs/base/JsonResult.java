@@ -17,7 +17,6 @@ public class JsonResult{
 	}
 
 	private int status;
-	private long total;
 	private Object message;
 	private Object data;
 	
@@ -39,14 +38,6 @@ public class JsonResult{
 	}
 
 	private String name;
-	
-	public long getTotal() {
-		return total;
-	}
-
-	public void setTotal(long total) {
-		this.total = total;
-	}
 
 	public Object getMessage() {
 		return message;

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 /**
  * controller 基类
- * @author wangshaodong
- * 2019年05月13日
+ * @author 王少东
+ * @date 2019年6月18日
  */
 public abstract class AbstractController  extends AbstractBase {
 	
@@ -26,9 +26,7 @@ public abstract class AbstractController  extends AbstractBase {
 	 */
 	@Autowired
 	HttpServletRequest httpRequest;
-	
-	@Autowired
-	protected GenericService genericService;
+
 	
 	/**
 	 * 全局转换日期方法
@@ -45,7 +43,6 @@ public abstract class AbstractController  extends AbstractBase {
 	
 	protected <K>ResponseEntity<JsonResult> success (Page<K> data) {
 		JsonResult result = JsonResult.success(data.getContent());
-		result.setTotal(data.getTotalElements());
 		return ResponseEntity.ok(result);
 	}
 	

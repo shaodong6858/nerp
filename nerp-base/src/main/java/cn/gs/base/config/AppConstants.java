@@ -97,11 +97,7 @@ public interface AppConstants {
      * attachment：内嵌显示
      */
     String CONTENT_DISPOSITION_INLINE = "inline";
-    
-    /**
-     * 最低浏览器版本
-     */
-    String MIN_IE = "minIE";
+
     
     /**
      * http 请求方法
@@ -111,12 +107,7 @@ public interface AppConstants {
     String HTTP_REQUEST_METHOD_PUT = "PUT";
     String HTTP_REQUEST_METHOD_DELETE = "DELETE";
     
-    /**
-     * 树形结构数据默认根id: -1
-     */
-    String DEFAULT_ROOT_ID = "-1";
-    
- 
+
     
     
 }

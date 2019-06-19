@@ -19,11 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.google.gson.Gson;
 
-import cn.gs.base.AsyncAccessLogHandler;
-import cn.gs.base.GenericService;
-import cn.gs.base.util.SpringUtils;
-import cn.gs.system.model.AccessLog;
-import cn.gs.system.model.AccessMapping;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -107,27 +102,27 @@ public class AccessLogFilter extends OncePerRequestFilter {
 				
 				String clientAddr = request.getRemoteAddr();
 				
-				// 保存请求日志到数据库
-				AccessLog accessLog = new AccessLog();
-				accessLog.setAccessToken("");
-				accessLog.setRequestTime(new Timestamp(requestTime));
-				accessLog.setResponseTime(new Timestamp(responseTime));
-				accessLog.setElapsedTime(responseTime - requestTime);
-				accessLog.setHeaders(gson.toJson(headerMap));
-				accessLog.setParameters(gson.toJson(getRequestParameterMap(request)));
-				accessLog.setResult(gson.toJson(responseObject));
-				accessLog.setMethod(request.getMethod());
-				accessLog.setQueryString(queryString);
-				accessLog.setUri(apiURI);
-				accessLog.setOperation(operation == null ? apiURI : operation);
-				accessLog.setResponseStatus(response.getStatus());
-				accessLog.setClientAddr(clientAddr);
-				
-				// 设置创建人
-//				accessLog.setCreateUserId(currentUser(request));
-				
-				// 异步保存请求日志
-				SpringUtils.getBean(AsyncAccessLogHandler.class).append(accessLog);
+//				// 保存请求日志到数据库
+//				AccessLog accessLog = new AccessLog();
+//				accessLog.setAccessToken("");
+//				accessLog.setRequestTime(new Timestamp(requestTime));
+//				accessLog.setResponseTime(new Timestamp(responseTime));
+//				accessLog.setElapsedTime(responseTime - requestTime);
+//				accessLog.setHeaders(gson.toJson(headerMap));
+//				accessLog.setParameters(gson.toJson(getRequestParameterMap(request)));
+//				accessLog.setResult(gson.toJson(responseObject));
+//				accessLog.setMethod(request.getMethod());
+//				accessLog.setQueryString(queryString);
+//				accessLog.setUri(apiURI);
+//				accessLog.setOperation(operation == null ? apiURI : operation);
+//				accessLog.setResponseStatus(response.getStatus());
+//				accessLog.setClientAddr(clientAddr);
+//				
+//				// 设置创建人
+////				accessLog.setCreateUserId(currentUser(request));
+//				
+//				// 异步保存请求日志
+//				SpringUtils.getBean(AsyncAccessLogHandler.class).append(accessLog);
 				
 			}
 			
@@ -156,7 +151,7 @@ public class AccessLogFilter extends OncePerRequestFilter {
     }
     
     public static void initMappingDataMap() {
-    	accessMappingMap = SpringUtils.getBean(GenericService.class).findAll(AccessMapping.class).stream().collect(Collectors.toMap(AccessMapping::getUri, AccessMapping::getOperation));
+//    	accessMappingMap = SpringUtils.getBean(GenericService.class).findAll(AccessMapping.class).stream().collect(Collectors.toMap(AccessMapping::getUri, AccessMapping::getOperation));
     }
     
 }

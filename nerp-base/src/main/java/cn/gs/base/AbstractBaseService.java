@@ -1,53 +1,56 @@
 package cn.gs.base;
 
-import static cn.gs.base.entity.IEntityDeletable.UNDELETED;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import javax.persistence.Id;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.gs.base.entity.IBaseEntity;
-import cn.gs.base.entity.IEntityDeletable;
+import cn.gs.base.util.BeanRefUtil;
+import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.entity.Condition;
 
 /**
  * 服务基类
- * @author xiapengtao
- * @date 2018年2月10日 
+ * @author 王少东
+ * @date 2019年06月17日 
  * @param <T>
  */
 @Transactional
-public abstract class AbstractBaseService<T extends IBaseEntity> extends AbstractService {
+public abstract class AbstractBaseService<T extends IBaseEntity> extends AbstractBase {
 	
-	public abstract IBaseRepository<T> getRepository();
+	public abstract IBaseMapper<T> getRepository();
     
-    /**
-	 * 创建实体
-	 * @param entity
-	 * @return
-	 */
-	public T create(T entity) {
-    	return super.create(entity);
-    }
-    
-    /**
+	//返回泛型类的class，在做直接查询实体的时候用到
+	public Class<T> getEntityClass(){
+		@SuppressWarnings("unchecked")
+		Class < T >  entityClass  =  (Class < T > ) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		return entityClass;
+	}
+	
+	public int create(T entity) {
+		int count = getRepository().insertSelective(entity);
+		return count;
+	}
+	
+	/**
      * 更新实体
      * @param entity
      * @return
      */
-    public T update(T entity) {
-    	return super.update(entity);
+    public int update(T entity) {
+    	return getRepository().updateByPrimaryKey(entity);
     }
     
     /**
@@ -55,198 +58,100 @@ public abstract class AbstractBaseService<T extends IBaseEntity> extends Abstrac
      * @param entity
      * @return
      */
-    public void delete(T entity) {
-    	super.delete(entity);
+    public int delete(T entity) {
+    	return getRepository().delete(entity);
+    }
+    /**
+     * @param id 可以是多个id 用“,”隔开
+     * @return 返回删除个数
+     */
+    public int delete(String id) {
+    	return getRepository().deleteByIds(id);
     }
 	
-	
 	/**
-	 * 获取查询未删除的实体的条件
+	 * @param 查询所有数据
+	 * @return 返回实体
 	 */
-	public List<Predicate> getPredicateUndeletedList(Root<T> root, CriteriaBuilder cb) {
-		List<Predicate> predicates = new ArrayList<>();
-		predicates.add(cb.equal(root.get("isDelete"), UNDELETED));
-		return predicates;
+	public PageInfo<T> getListAll(int pageNum,int pageSize) {
+		 PageHelper.startPage(pageNum,pageSize);
+		 List<T>  list = getRepository().selectAll();
+    	 PageInfo<T> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+	public  List<T> getListAll() {
+		 List<T>  list = getRepository().selectAll();
+		return list;
 	}
 	
 	/**
-	 * 根据id查找实体
-	 * @param id
-	 * @return
+	 * @param T 根据传入的实体查询
+	 * @return 返回实体
 	 */
-	public T get (String id) {
-		if (id == null) {
+	public List<T> getListAll(T entity) {
+		List<T>  list = getRepository().select(entity);
+		return list;
+	}
+	public PageInfo<T> getListAll(T entity,int pageNum,int pageSize) {
+		PageHelper.startPage(pageNum,pageSize);
+		List<T>  list = getRepository().select(entity);
+		 PageInfo<T> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+	
+	/**
+	 * @param id Sring类型的主键
+	 * @return 返回实体
+	 */
+	public T get(String id) {
+		T entity;
+		try {
+			entity = setEntityId(getEntityClass(), id);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
-		return  getRepository().findById(id).orElse(null);
+		T  recordc = getRepository().selectOne(entity);
+		return recordc;
 	}
-	
-	
-	public boolean existsById (String id) {
-		return  getRepository().existsById(id);
-	}
-	
-	
-    /**
-     * 删除
-     * @param entity
-     * @return
-     */
-    public void delete(String id) {
-    	T entity = get(id);
-    	if (entity != null) {
-    		delete(entity);
-    	}
-    }
-    
-    /**
-     * 删除
-     * @return
-     */
-    public void delete(String... id) {
-    	for (int i = 0; i < id.length; i++) {
-    		delete(id[i]);
-		}
-    }
-    
-    /**
-     * 删除所有
-     * @return
-     */
-    public void deleteAll() {
-    	getRepository().deleteAll();
-    }
-    
-    /**
-     * 统计数量
-     * @return
-     */
-    public long count() {
-    	return getRepository().count();
-    }
-    
-    /**
-     * 查询
-     * @return
-     */
-    public List<T>  findAll(Sort sort) {
-    	return getRepository().findAll(sort);
-    }
-    
-    /**
-     * 查询
-     * @return
-     */
-    public List<T>  findAll() {
-    	return getRepository().findAll();
-    }
-    
-    /**
-     * 查询
-     * @return
-     */
-    public List<T>  findAllById(Iterable<String> ids) {
-    	return getRepository().findAllById(ids);
-    }
-    
-    /**
-     * 查询
-     * @return
-     */
-    public Page<T>  findAll(Pageable pageable) {
-    	return getRepository().findAll(pageable);
-    }
-    
-    
-    /**
-	 * 获取查询未删除的实体的条件
+	/**
+	 * @param id Int类型的主键
+	 * @return 返回实体
 	 */
-	public Predicate getPredicateUndeleted (Root<T> root, CriteriaBuilder cb) {
-		boolean hasIsDelete = IEntityDeletable.class.isAssignableFrom(root.getJavaType());
-		if (hasIsDelete) {
-			return cb.equal(root.get("isDelete"), UNDELETED);
-		} else {
+	public  T get(int id) {
+		T entity;
+		try {
+			entity = setEntityId(getEntityClass(), id);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
+		T  recordc =  getRepository().selectOne(entity);
+		return recordc;
 	}
-    
-    /**
-     * 查询
-     * @return
-     */
-    public List<T>  findAllUndeleted () {
-    	return getRepository().findAll(((root, query, cb) -> {
-    		return getPredicateUndeleted(root, cb);
-			}));
-    }
-    
-    /**
-     * 排序查询
-     * @return
-     */
-    public List<T>  findAllUndeleted (Sort sort) {
-    	return getRepository().findAll(((root, query, cb) -> {
-    		return getPredicateUndeleted(root, cb);
-			}), sort);
-    }
-    
-    /**
-     * 分页查询
-     * @return
-     */
-    public Page<T>  findAllUndeleted (Pageable page) {
-    	return getRepository().findAll(((root, query, cb) -> {
-    		return getPredicateUndeleted(root, cb);
-    	}), page);
-    }
-    
-    public List<T> findByParentId(String parentId) {
-    	return getRepository().findAll(((root, query, cb) -> {
-		 List<Predicate> predicates = new ArrayList<>();
-         predicates.add(cb.equal(root.get("parentId"), parentId));
-         return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-		}));
-	};
-	
-	/**
-	 * 查询
-	 * @param query
-	 * @param params
-	 * @param page
-	 * @return
-	 */
-	public <K>List<K> getQueryResultList(String qlString, Class<K> resultClass, Map<String, Object> params, Pageable page) {
-		TypedQuery<K> query = genericService.getEntityManager().createQuery(qlString, resultClass);
-		query.setFirstResult((int)page.getOffset());
-		query.setMaxResults((int)page.getPageSize());
-		params.forEach((k, v) -> {
-			query.setParameter(k, v);
-		});
-		return query.getResultList();
+	private <T extends IBaseEntity> T setEntityId(Class<T> entityClass,String id) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		T entity = entityClass.newInstance();
+		for(Field field : entityClass.getDeclaredFields()) {
+			Id idField = field.getAnnotation(Id.class);
+			field.setAccessible(true);
+			if (idField != null) {
+				Method method = entityClass.getMethod(BeanRefUtil.parSetName(field.getName()),String.class);
+				method.invoke(entity, id);
+			}
+		}
+		return entity;
 	}
-    
-	/**
-	 * 分页查询
-	 * @param query
-	 * @param params
-	 * @param page
-	 * @return
-	 */
-	public <K>Page<K> getPagetList(String hql, String hqlTotal, Class<K> resultClass, Map<String, Object> params, Pageable page) {
-		Query queryTotal = genericService.getEntityManager().createQuery(hqlTotal);
-		params.forEach((k, v) -> {
-			queryTotal.setParameter(k, v);
-		});
-		long total = Long.parseLong(queryTotal.getSingleResult().toString());
-		
-		TypedQuery<K> query = genericService.getEntityManager().createQuery(hql, resultClass);
-		query.setFirstResult((int)page.getOffset());
-		query.setMaxResults((int)page.getPageSize());
-		params.forEach((k, v) -> {
-			query.setParameter(k, v);
-		});
-		
-		return new PageImpl<>(query.getResultList(), page, total);
+	private <T extends IBaseEntity> T setEntityId(Class<T> entityClass,int id) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		T entity = entityClass.newInstance();
+		for(Field field : entityClass.getDeclaredFields()) {
+			Id idField = field.getAnnotation(Id.class);
+			field.setAccessible(true);
+			if (idField != null) {
+				Method method = entityClass.getMethod(BeanRefUtil.parSetName(field.getName()),Integer.class);
+				method.invoke(entity, id);
+			}
+		}
+		return entity;
 	}
 	
 }

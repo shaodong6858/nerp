@@ -12,15 +12,10 @@ import com.google.gson.Gson;
  * C: CREATE_TIME_ 、 CREATE_USER_ID_
  * U: LAST_MODIFIED_TIME_ 、 LAST_MODIFIED_USER_ID_
  * D: DELETE_TIME_ 、 DELETE_USER_ID_ 、 IS_DELETE_
- * @author wangshaodong
- * 2019年05月13日
+ * @author 王少东
+ * @date 2019年6月17日
  */
 
 public interface IBaseEntity extends Serializable{
-	
-	Gson gson = new Gson();
-	
-	public String getId();
-	public void setId(String id);
 	
 }

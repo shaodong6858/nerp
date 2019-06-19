@@ -1,0 +1,46 @@
+/* @font-face {
+    font-family:'apple'; 
+    src:url('../font/apple.eot'); 
+    src:url('../font/apple.eot?#iefix') format('embedded-opentype'),  
+    url('../font/apple.woff') format('woff'),
+    url('../font/apple.ttf')format('truetype'); 
+    font-weight:normal; 
+    font-style:normal; 
+} */
+*{
+    margin:0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none!important;
+    color: inherit;
+}
+/* IE去掉焦点虚线框 */
+a:focus{
+    outline:none;
+}
+a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+body{
+    background: #f2f2f2;
+}
+/* 字体样式 */
+.grayFont{
+    color: #333;
+    font-size: 12px;
+}
+/* 高度坍塌 */
+.heightCollpase::after{
+    content:'';
+    display: block;
+    clear: both;
+}
+/* 表格背景 */
+.whiteBg{
+    background: #fff;
+}

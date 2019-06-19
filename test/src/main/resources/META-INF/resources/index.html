@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="img/logo2.ico">
+    <!-- index样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 公共样式 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/common.css">
+    <title>办公自动化系统</title>
+</head>
+<body>
+    <div id="main">
+        <!-- 顶部开始 -->
+        <div class="top_con">
+            <!-- 左侧logo -->
+            <div class="top_conleft">
+                <img src="img/logo.png" alt="">
+            </div>
+            <!-- 顶部右侧 -->
+            <div class="top_conright">
+                <ul class="top_conright_list heightCollpase">
+                    <li>
+                        <img src="img/topIcon1.png" alt="" class="topIcon">
+                        <a href="#">首页</a>
+                    </li>
+                    <li>
+                        <img src="img/topIcon2.png" alt="" class="topIcon">
+                        <a href="#">移动应用</a>
+                    </li>
+                    <li>
+                        <img src="img/topIcon3.png" alt="" class="topIcon">
+                        <a href="#">控件安装</a>
+                    </li>       
+                </ul>
+                <div class="top_user_time">
+                    <div class="top_user">
+                        <img src="img/topIcon4.png" alt="" class="topIcon">
+                        <span class="grayFont">admin</span>
+                        <span id="myTime" class="top_time grayFont"></span> 
+                    </div>                   
+                        
+                </div>
+                       
+            </div>
+        </div>
+        <!-- 顶部结束 -->
+        <!-- 导航开始 -->
+        <div class="nav_con">
+            <div class="nav_con_list">
+                <ul id="myTab" class="nav nav_tabs nav_list">
+                    <li class="active"><a href="#myDeal" data-toggle="tab">个人事务</a></li>
+                    <li><a href="" data-toggle="tab">公文管理</a></li>
+                    <li><a href="" data-toggle="tab">法律管理</a></li>
+                    <li><a href="#workAttendance" data-toggle="tab">考勤管理</a></li>
+                    <li><a href="" data-toggle="tab">公共信息</a></li>
+                    <li><a href="" data-toggle="tab">IT业务审批</a></li>
+                    <li><a href="" data-toggle="tab">综合业务1</a></li>
+                    <li><a href="" data-toggle="tab">综合业务2</a></li>
+                    <li><a href="" data-toggle="tab">综合业务3</a></li>
+                    <li><a href="" data-toggle="tab">综合业务4</a></li>
+                    <li><a href="" data-toggle="tab">综合业务5</a></li>
+                    <li><a href="" data-toggle="tab">综合业务6</a></li>
+                </ul>
+            </div>   
+            <div class="navBtn">
+                <img class="nav_left_click disabled" src="img/navLeft.png">
+                <img class="nav_right_click" src="img/navRight.png">
+            </div>      
+            <!-- 导航右边搜索 -->
+            <div class="nav_search">
+                <img src="img/search.png" alt="" class="topIcon">
+                <input type="search" placeholder="请输入关键字">
+                <span class="search_btn">搜索</span>
+            </div>
+        </div>
+        <!-- 导航结束 -->
+        <div class="con">
+            <div class="tab_content tab_position">
+                <!-- 左侧导航开始 -->
+                <!-- 我的待办 -->
+                <div class="tab-pane fade in active con_leftnav" id="myDeal">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapseOne" hidefocus="true">
+                                        <img src="img/leftnavIcon1.png" alt="" class="topIcon">
+                                        工作事宜
+                                        <img src="img/gtBottom.png" alt="">
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ul>
+                                        <li class="active"><img src="img/gtsmall.png" alt="">我的代办</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapseTwo">
+                                        <img src="img/leftnavIcon2.png" alt="" class="topIcon">
+                                        委托办理                            
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                    ......        
+                            </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapseThree">
+                                        <img src="img/leftnavIcon3.png" alt="" class="topIcon">
+                                        日程安排
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    ....
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapseFour">
+                                        <img src="img/leftnavIcon4.png" alt="" class="topIcon">
+                                        个人信息
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    ......
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapseFive">
+                                        <img src="img/leftnavIcon6.png" alt="" class="topIcon">
+                                        功能信息
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 考勤管理 -->
+                <div class="tab-pane fade con_leftnav" id="workAttendance">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapse1" hidefocus="true">
+                                        <img src="img/leftnavIcon1.png" alt="" class="topIcon">
+                                        查询统计
+                                        <img src="img/gtBottom.png" alt="">
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ul>
+                                        <li><img src="img/gtsmall.png" alt="">个人假期查询</li>
+                                        <li><img src="img/gtsmall.png" alt="">个人月度查询</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapse2">
+                                        <img src="img/leftnavIcon2.png" alt="" class="topIcon">
+                                        请销假管理                            
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                        ......        
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapse3">
+                                        <img src="img/leftnavIcon3.png" alt="" class="topIcon">
+                                        出差申请
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    ....
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapse4">
+                                        <img src="img/leftnavIcon4.png" alt="" class="topIcon">
+                                        公出申请
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse4" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    ......
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapse5">
+                                        <img src="img/leftnavIcon6.png" alt="" class="topIcon">
+                                        忘打卡申请
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse5" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    ...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" 
+                                    href="#collapse6">
+                                        <img src="img/leftnavIcon6.png" alt="" class="topIcon">
+                                        加班申请
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse6" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                    <p>123</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 左侧导航结束 -->
+            <!-- 右侧内容 -->
+            <div class="con_right">
+                <div class="con_right_nav">
+                    您的位置:
+                    <span class="location">个人事务</span>
+                </div>
+                <div class="con_right_tab">
+                    <div class="con_right_table">
+                        <ul class="table_left_list">
+                            <li class="tableactive">我的待办</li>
+                            <li>个人日程</li>
+                            <li>公告</li>
+                        </ul>
+                        <div class="con_table_con tab_content">
+                            <!-- 我的待办 -->
+                            <div class="myHandle">
+                                <table class="table" >
+                                    <thead>
+                                        <tr>
+                                            <th>标题</th>
+                                            <th>类型</th>
+                                            <th>来源</th>
+                                            <th>状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td title="123">
+                                                <span class="">【考勤】</span>
+                                                XXX2019-04-12日考勤异常申请
+                                            </td>
+                                            <td>忘打卡申请 </td>
+                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                            <td>流程结束</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="">【考勤】</span>
+                                                XXX2019-04-12日考勤异常申请
+                                            </td>
+                                            <td>忘打卡申请 </td>
+                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                            <td>流程结束</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="">【考勤】</span>
+                                                XXX2019-04-12日考勤异常申请
+                                            </td>
+                                            <td>忘打卡申请 </td>
+                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                            <td>流程结束</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="">【考勤】</span>
+                                                XXX2019-04-12日考勤异常申请
+                                            </td>
+                                            <td>忘打卡申请 </td>
+                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                            <td>流程结束</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="" style="display:none">个人日程</div>
+                            <div class="" style="display:none">公告</div>
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+        </div>     
+    </div>
+    <script src="js/jquery-2.0.3.min.js"></script>
+    <!-- <script src="js/axios.min.js"></script> -->
+    <!-- <script src="js/vue.js"></script> -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

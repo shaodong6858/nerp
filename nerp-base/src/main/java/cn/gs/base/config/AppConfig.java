@@ -55,20 +55,6 @@ public class AppConfig {
 	}
 	
 	/**
-	 * 注册AccessLogFilter过滤器
-	 * @return
-	 */
-	@Bean
-	public FilterRegistrationBean<AccessLogFilter> accessLogFilterRegistration() {
-		FilterRegistrationBean<AccessLogFilter> registration = new FilterRegistrationBean<AccessLogFilter>();
-		registration.setFilter(new AccessLogFilter());
-		registration.addUrlPatterns("/*");
-		registration.setName("AccessLogFilter");
-		registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
-		return registration;
-	}
-	
-	/**
 	 * restTemplate 实例
 	 * @param builder
 	 * @return
