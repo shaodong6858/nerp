@@ -1,6 +1,8 @@
 package cn.gs.system.model;
 
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 import cn.gs.base.entity.IBaseEntity;
@@ -101,4 +103,6 @@ public class SysApp  implements IBaseEntity {
     @Column(name = "updated_time")
     private Date updatedTime;
 
+    @Transient
+    private List<SysApp> subList;
 }

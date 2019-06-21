@@ -22,7 +22,7 @@ new Vue({
        },
      methods: {
     	getUserInfo (){
-    			axios.get('system/user/info?empnumber=fwadmin')
+    			axios.get('system/user/info')
     			  .then((response) => {
     				  var systemInfo = response.data.data;
     				  this.userInfo = systemInfo;
@@ -34,7 +34,7 @@ new Vue({
     					  }
     				  } 
     				  $(".nav_left_click").addClass("disabled");
-    				  if(this.moved>=navLi.length-7){
+    				  if(this.moved>=this.topNavList.length-7){
                           $(".nav_right_click").addClass("disabled");
     				  }
     			      console.log(systemInfo);
@@ -42,6 +42,15 @@ new Vue({
     			  .catch((error) => {
     			      console.log(error);
     			  });
+    		},
+    		leftNavItemClick(item){
+    			if(item.subList == null) {
+    				if (item.appPath != null && $('#'+item.appPath) != null){
+    					$(".right_tab_con .system_con").hide();
+    					$('#'+item.appPath).show();
+    				}
+    				console.log(item.appName);
+    			}
     		},
     		showSelectUser(){
     			 $('.model_bg').show();

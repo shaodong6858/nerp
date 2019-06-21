@@ -21,6 +21,7 @@ public interface SysNavMapper extends IBaseMapper<SysNav> {
 		@Result(id=true,column="nav_id",property="navId"),
 		@Result(column="nav_name",property="navName"),
 		@Result(column="nav_cat",property="navCat"),
+		@Result(column="nav_subcat",property="navSubcat"),
 		@Result(column="fkapp_id",property="app",one=@One(select="cn.gs.system.repository.SysAppMapper.getAppById",fetchType= FetchType.EAGER))
 	})
 	public List<SysNav> fillByDeptcode(String deptcode);

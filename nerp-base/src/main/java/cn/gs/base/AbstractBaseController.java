@@ -45,7 +45,7 @@ public abstract class AbstractBaseController<T extends IBaseEntity>  extends Abs
 	 */
 	@GetMapping("{id}")
 	public ResponseEntity<JsonResult> get(@PathVariable String id) {
-		return entityResult(getService().get(id));
+		return entityResult(getService().get(Integer.valueOf(id)));
 	}
 	
 	/**

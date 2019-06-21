@@ -42,6 +42,6 @@ public class OrgUsraccount  implements IBaseEntity {
     private OrgUnit userUnit;
     
     @Transient
-    private Map<String,List<SysNav>> navList;
+    private Map<String,List<SysApp>> navList;
     
 }

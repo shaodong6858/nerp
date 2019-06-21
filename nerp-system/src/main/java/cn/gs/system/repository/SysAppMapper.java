@@ -17,7 +17,8 @@ public interface SysAppMapper extends IBaseMapper<SysApp> {
 	@Results({
 		@Result(id=true,column="app_id",property="appId"),
 		@Result(column="app_name",property="appName"),
-		@Result(column="app_cat",property="appCat")
+		@Result(column="app_cat",property="appCat"),
+		@Result(column="app_path",property="appPath")
 	})
 	public SysApp getAppById(String appId);
 }

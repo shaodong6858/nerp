@@ -54,6 +54,6 @@ public class LoginController  extends AbstractBaseController<OrgUsraccount>{
 	@Override
 	public AbstractBaseService<OrgUsraccount> getService() {
 		// TODO Auto-generated method stub
-		return null;
+		return loginService;
 	}
 }

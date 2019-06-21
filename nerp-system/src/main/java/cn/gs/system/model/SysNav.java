@@ -1,6 +1,8 @@
 package cn.gs.system.model;
 
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 import cn.gs.base.entity.IBaseEntity;
@@ -85,4 +87,5 @@ public class SysNav  implements IBaseEntity {
     
     @Transient
     private SysApp app;
+    
 }

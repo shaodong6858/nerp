@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import cn.gs.base.IBaseMapper;
 import cn.gs.system.model.OrgUnit;
 import cn.gs.system.model.OrgUser;
 import cn.gs.system.model.OrgUsraccount;
+import cn.gs.system.model.SysApp;
 import cn.gs.system.model.SysNav;
 import cn.gs.system.repository.OrgUnitMapper;
 import cn.gs.system.repository.OrgUserMapper;
@@ -67,15 +69,54 @@ public class LoginService extends AbstractBaseService<OrgUsraccount> {
 		return userAccount;
 	}
 	
-	public Map<String,List<SysNav>> getNavIndex(List<SysNav> navList){
-		Map<String, List<SysNav>> map = new HashMap<>();
+	public Map<String,List<SysApp>> getNavIndex(List<SysNav> navList){
+		Map<String, Map<String, List<SysApp>>> subMap = new HashMap<>();
 		navList.forEach(item -> {
-			if (map.containsKey(item.getNavCat())) {
-				map.get(item.getNavCat()).add(item);
+			if (StringUtils.isEmpty(item.getNavSubcat()) ) {
 				return;
 			}
-			List<SysNav> list = new ArrayList<>();
-			list.add(item);
+			if (subMap.containsKey(item.getNavCat())) {
+				Map<String, List<SysApp>> map = subMap.get(item.getNavCat());
+				if (map.containsKey(item.getNavSubcat())) {
+					map.get(item.getNavSubcat()).add(item.getApp());
+					return;
+				} else {
+					List<SysApp> list = new ArrayList<>();
+					list.add(item.getApp());
+					map.put(item.getNavSubcat(),list);
+				}
+				return;
+			}
+			Map<String, List<SysApp>> map = new HashMap<>();
+			List<SysApp> list = new ArrayList<>();
+			list.add(item.getApp());
+			map.put(item.getNavSubcat(), list);
+			subMap.put(item.getNavCat(), map);
+		});
+		
+		Map<String, List<SysApp>> map = new HashMap<>();
+		
+		for (String key : subMap.keySet()) { 
+			List<SysApp> list = new ArrayList<>();
+			for (String subKey : subMap.get(key).keySet()) { 
+				SysApp subNav = new SysApp();
+				subNav.setAppName(subKey);
+				subNav.setSubList(subMap.get(key).get(subKey));
+				list.add(subNav);
+			}
+			map.put(key, list);
+		}
+		
+		navList.forEach(item -> {
+			if (!StringUtils.isEmpty(item.getNavSubcat()) ) {
+				return;
+			}
+			if (map.containsKey(item.getNavCat())) {
+				map.get(item.getNavCat()).add(item.getApp());
+				return;
+			}
+			List<SysApp> list = new ArrayList<>();
+			list.add(item.getApp());
 			map.put(item.getNavCat(), list);
 		});
 		return map;
