@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import net.unicon.cas.client.configuration.EnableCasClient;
 import tk.mybatis.spring.annotation.MapperScan;
 
-//@EnableCasClient
+@EnableCasClient
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableScheduling
 @MapperScan("cn.gs.**.repository")

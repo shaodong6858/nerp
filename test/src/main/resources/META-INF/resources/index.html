@@ -10,6 +10,8 @@
     <!-- 公共样式 -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
     <title>办公自动化系统</title>
 </head>
 <body>
@@ -39,7 +41,7 @@
                 <div class="top_user_time">
                     <div class="top_user">
                         <img src="img/topIcon4.png" alt="" class="topIcon">
-                        <span class="grayFont">admin</span>
+                        <span class="grayFont">{{userInfo.userInfo.userName}}</span>
                         <span id="myTime" class="top_time grayFont"></span> 
                     </div>                   
                         
@@ -52,18 +54,15 @@
         <div class="nav_con">
             <div class="nav_con_list">
                 <ul id="myTab" class="nav nav_tabs nav_list">
-                    <li class="active"><a href="#myDeal" data-toggle="tab">个人事务</a></li>
-                    <li><a href="" data-toggle="tab">公文管理</a></li>
-                    <li><a href="" data-toggle="tab">法律管理</a></li>
+                    <!-- <li class="active"><a href="#myDeal" data-toggle="tab">个人事务</a></li>
+                    <li><a href="#documentManage" data-toggle="tab">公文管理</a></li>
+                    <li><a href="#lawManage" data-toggle="tab">法律管理</a></li>
                     <li><a href="#workAttendance" data-toggle="tab">考勤管理</a></li>
-                    <li><a href="" data-toggle="tab">公共信息</a></li>
-                    <li><a href="" data-toggle="tab">IT业务审批</a></li>
-                    <li><a href="" data-toggle="tab">综合业务1</a></li>
-                    <li><a href="" data-toggle="tab">综合业务2</a></li>
-                    <li><a href="" data-toggle="tab">综合业务3</a></li>
-                    <li><a href="" data-toggle="tab">综合业务4</a></li>
-                    <li><a href="" data-toggle="tab">综合业务5</a></li>
-                    <li><a href="" data-toggle="tab">综合业务6</a></li>
+                    <li><a href="#publicManage" data-toggle="tab">公共信息</a></li>
+                    <li><a href="#businessManage" data-toggle="tab">IT业务审批</a></li>
+                    <li><a href="#systemManage" data-toggle="tab">系统管理</a></li> -->
+                    <li v-for="(val,key,index) in userInfo.navList" :class="{'active':index===0}"><a href="" data-toggle="tab">{{key}}</a></li>
+                    
                 </ul>
             </div>   
             <div class="navBtn">
@@ -78,19 +77,19 @@
             </div>
         </div>
         <!-- 导航结束 -->
-        <div class="con">
-            <div class="tab_content tab_position">
+        <div class="con tab_position">
+            <div class="tab_content ">
                 <!-- 左侧导航开始 -->
-                <!-- 我的待办 -->
+                <!--个人事务 -->
                 <div class="tab-pane fade in active con_leftnav" id="myDeal">
                     <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
+                        <div v-for="item in currentNavList" key="item" class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" 
                                     href="#collapseOne" hidefocus="true">
                                         <img src="img/leftnavIcon1.png" alt="" class="topIcon">
-                                        工作事宜
+                                        {{item.app.appName}}
                                         <img src="img/gtBottom.png" alt="">
                                     </a>
                                 </h4>
@@ -98,217 +97,19 @@
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <ul>
-                                        <li class="active"><img src="img/gtsmall.png" alt="">我的代办</li>
+                                        <li class="leftActive"><img src="img/gtsmall.png" alt="">我的待办</li>
                                         <li><img src="img/gtsmall.png" alt="">我的待阅</li>
-                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
-                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
-                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
-                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
-                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
-                                        <li><img src="img/gtsmall.png" alt="">我的待阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的关注</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的已办</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的已阅</li>
+                                        <li><img src="img/gtsmall.png" alt="">我的办结</li>
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapseTwo">
-                                        <img src="img/leftnavIcon2.png" alt="" class="topIcon">
-                                        委托办理                            
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                    ......        
-                            </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapseThree">
-                                        <img src="img/leftnavIcon3.png" alt="" class="topIcon">
-                                        日程安排
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    ....
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapseFour">
-                                        <img src="img/leftnavIcon4.png" alt="" class="topIcon">
-                                        个人信息
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseFour" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    ......
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapseFive">
-                                        <img src="img/leftnavIcon6.png" alt="" class="topIcon">
-                                        功能信息
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseFive" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- 考勤管理 -->
-                <div class="tab-pane fade con_leftnav" id="workAttendance">
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapse1" hidefocus="true">
-                                        <img src="img/leftnavIcon1.png" alt="" class="topIcon">
-                                        查询统计
-                                        <img src="img/gtBottom.png" alt="">
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <ul>
-                                        <li><img src="img/gtsmall.png" alt="">个人假期查询</li>
-                                        <li><img src="img/gtsmall.png" alt="">个人月度查询</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapse2">
-                                        <img src="img/leftnavIcon2.png" alt="" class="topIcon">
-                                        请销假管理                            
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapse2" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                        ......        
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapse3">
-                                        <img src="img/leftnavIcon3.png" alt="" class="topIcon">
-                                        出差申请
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapse3" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    ....
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapse4">
-                                        <img src="img/leftnavIcon4.png" alt="" class="topIcon">
-                                        公出申请
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapse4" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    ......
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapse5">
-                                        <img src="img/leftnavIcon6.png" alt="" class="topIcon">
-                                        忘打卡申请
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapse5" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    ...
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" 
-                                    href="#collapse6">
-                                        <img src="img/leftnavIcon6.png" alt="" class="topIcon">
-                                        加班申请
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapse6" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                    <p>123</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <!-- 左侧导航结束 -->
             <!-- 右侧内容 -->
@@ -317,72 +118,438 @@
                     您的位置:
                     <span class="location">个人事务</span>
                 </div>
-                <div class="con_right_tab">
-                    <div class="con_right_table">
-                        <ul class="table_left_list">
-                            <li class="tableactive">我的待办</li>
-                            <li>个人日程</li>
-                            <li>公告</li>
-                        </ul>
-                        <div class="con_table_con tab_content">
-                            <!-- 我的待办 -->
-                            <div class="myHandle">
-                                <table class="table" >
-                                    <thead>
-                                        <tr>
-                                            <th>标题</th>
-                                            <th>类型</th>
-                                            <th>来源</th>
-                                            <th>状态</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td title="123">
-                                                <span class="">【考勤】</span>
-                                                XXX2019-04-12日考勤异常申请
-                                            </td>
-                                            <td>忘打卡申请 </td>
-                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
-                                            <td>流程结束</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span class="">【考勤】</span>
-                                                XXX2019-04-12日考勤异常申请
-                                            </td>
-                                            <td>忘打卡申请 </td>
-                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
-                                            <td>流程结束</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span class="">【考勤】</span>
-                                                XXX2019-04-12日考勤异常申请
-                                            </td>
-                                            <td>忘打卡申请 </td>
-                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
-                                            <td>流程结束</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span class="">【考勤】</span>
-                                                XXX2019-04-12日考勤异常申请
-                                            </td>
-                                            <td>忘打卡申请 </td>
-                                            <td>运营维护部办公自动化系统/运营维护部/机关</td>
-                                            <td>流程结束</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                <!-- 个人事务 -->
+                <div class="right_tab_con">
+                    <!-- 我的待办 -->
+                    <div class="con_right_tab">
+                        <div class="con_right_table">
+                            <ul class="table_left_list">
+                                <li class="tableactive">我的待办</li>
+                                <li>个人日程</li>
+                                <li>公告</li>
+                            </ul>
+                            <div class="con_table_con tab_content">
+                                <!-- 我的待办 -->
+                                <div class="myHandle">
+                                    <table class="table" >
+                                        <thead>
+                                            <tr>
+                                                <th>标题</th>
+                                                <th>类型</th>
+                                                <th>来源</th>
+                                                <th>状态</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td title="123">
+                                                    <span class="">【考勤】</span>
+                                                    XXX2019-04-12日考勤异常申请
+                                                </td>
+                                                <td>忘打卡申请 </td>
+                                                <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                                <td>流程结束</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="">【考勤】</span>
+                                                    XXX2019-04-12日考勤异常申请
+                                                </td>
+                                                <td>忘打卡申请 </td>
+                                                <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                                <td>流程结束</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="">【考勤】</span>
+                                                    XXX2019-04-12日考勤异常申请
+                                                </td>
+                                                <td>忘打卡申请 </td>
+                                                <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                                <td>流程结束</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="">【考勤】</span>
+                                                    XXX2019-04-12日考勤异常申请
+                                                </td>
+                                                <td>忘打卡申请 </td>
+                                                <td>运营维护部办公自动化系统/运营维护部/机关</td>
+                                                <td>流程结束</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="" style="display:none">个人日程</div>
+                                <div class="" style="display:none">公告</div>
                             </div>
-                            <div class="" style="display:none">个人日程</div>
-                            <div class="" style="display:none">公告</div>
+                        </div>
+                    </div>
+                    <!-- 我的待阅 -->
+                    <div class="con_right_tab">
+                        我的待阅
+                    </div>
+                    <!-- 我的关注 -->
+                    <div class="con_right_tab">
+                        我的关注
+                    </div>
+                </div>
+                <!-- 公文管理 -->
+                <div class="right_tab_con">
+                    公文管理
+                </div>
+                <!-- 法律管理 -->
+                <div class="right_tab_con">
+                    法律管理
+                </div>
+                <!-- 考勤管理 -->
+                <div class="right_tab_con">
+                    考勤管理
+                </div>
+                <!-- 公共信息 -->
+                <div class="right_tab_con">
+                    公共信息
+                </div>
+                <!-- IT业务审批 -->
+                <div class="right_tab_con">
+                    IT业务审批
+                </div>
+                <!-- 系统管理 -->
+                <div class="right_tab_con">
+                    <!-- 部门 -->
+                    <div class="system_con">
+                       <div class="system_title">部门信息维护</div>
+                       <div class="system_table">
+                            <div class="system_input input_padding">
+                                <span class="sys_title">机构编号:</span>
+                                <input type="text" placeholder="49529" class="sys_input input_bg_gray">
+                            </div>
+                            <div class="system_input">
+                                <span class="sys_title">MDM编号:</span>
+                                <input type="text" placeholder="******" class="sys_input">
+                                <img src="img/sysIcon.png" alt="">
+                            </div>
+                            <div class="system_input">
+                                <span class="sys_title">机构名称:</span>
+                                <input type="text" placeholder="运营维护部" class="sys_input">
+                                <img src="img/sysIcon.png" alt="">
+                            </div>
+                            <div class="system_input">
+                                <span class="sys_title">机构简称:</span>
+                                <input type="text" placeholder="运营维护部" class="sys_input">
+                                <img src="img/sysIcon.png" alt="">
+                            </div>
+                            <div class="system_input input_padding">
+                                <span class="sys_title">机构分类:</span>
+                                <!-- <input type="text" placeholder="运营维护部" class="sys_input input_bg_gray"> -->
+                                <select name="" id="" class="sys_input">
+                                    <option value="department1" selected>运营维护部</option>
+                                    <option value="department2">部门1</option>
+                                    <option value="department3">部门2</option>
+                                    <option value="department4">部门3</option>
+                                </select>
+                            </div>
+                            <div class="system_input input_padding">
+                                <span class="sys_title">上级部门:</span>
+                                <input type="text" placeholder="神华集团" class="sys_input input_bg_gray">
+                            </div>
+                            <div class="system_input input_padding">
+                                <span class="sys_title">上级机构编号:</span>
+                                <input type="text" placeholder="49178" class="sys_input input_bg_gray">
+                            </div>
+                            <div class="system_input input_padding">
+                                <span class="sys_title">上级MDM机构编号:</span>
+                                <input type="text" placeholder="49178" class="sys_input input_bg_gray">
+                            </div>
+                            <div class="system_input input_width">
+                                <span class="sys_title">机构位置:</span>
+                                <input type="text" placeholder="北京市东城区鼓楼大街26号" class="sys_input sys_width">
+                            </div>
+                            <div class="system_input input_width">
+                                <span class="sys_title">部门领导:</span>
+                                <input type="text" placeholder="" class="sys_input sys_width1">
+                                <span class="select_person">选择人员</span>
+                            </div>
+                            <div class="system_input input_width">
+                                <span class="sys_title">备注:</span>
+                                <input type="text" placeholder="" class="sys_input sys_width1">
+                            </div>
+                       </div>
+                       <div class="per_button per_button1">
+                            <button class="sureBtn">确定</button>
+                            <button class="cancleBtn">取消</button>
+                        </div>
+                    </div>
+                    <!-- 群组 -->
+                    <div class="system_con">
+                        <div class="groups_con">
+                            <div>部门群组列表</div>
+                            <div class="groups_btn">
+                                <button class="sureBtn">新增</button>
+                                <button class="cancleBtn">返回</button>
+                            </div>
+                        </div>
+                        <table class="groups_table">
+                            <thead>
+                                <tr>
+                                    <th>群组名称</th>
+                                    <th>所属部门</th>
+                                    <th>成员</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>董事会群组1</td>
+                                    <td>神华集团</td>
+                                    <td>张三、李四</td>
+                                    <td>
+                                        <img src="img/group_ico.png" alt="">修改
+                                        <img src="img/group_ico1.png" alt="">注销
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>董事会群组1</td>
+                                    <td>神华集团</td>
+                                    <td>张三、李四</td>
+                                    <td>
+                                        <img src="img/group_ico.png" alt="">修改
+                                        <img src="img/group_ico1.png" alt="">注销
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>董事会群组1</td>
+                                    <td>神华集团</td>
+                                    <td>张三、李四</td>
+                                    <td>
+                                        <img src="img/group_ico.png" alt="">修改
+                                        <img src="img/group_ico1.png" alt="">注销
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="groups_table1">
+                            <div class="per_title">群组信息维护</div>
+                            <div class="groups_table1_con">
+                                <ul class="groups_table1_left">
+                                    <li>所属部门：</li>
+                                    <li>群组名称：</li>
+                                    <li>群组成员：</li>
+                                    <li><span class="space">备</span>注：</li>
+                                </ul>
+                                <div class="groups_table1_right">
+                                    <input type="text" placeholder="49999" class="groups_table1_input input_bg_gray">
+                                    <input type="text" placeholder="" class="groups_table1_input ">
+                                    <img src="img/sysIcon.png" alt="">        
+                                    <input type="text" placeholder="" class="groups_table1_input ">
+                                    <span class="select_person">选择人员</span>
+                                    <input type="text" placeholder="" class="groups_table1_input ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 部们管理 -->
+                    <div class="system_con">
+                        <div class="department_con">
+                            <div class="de_left">
+                                <div class="department_top_left">
+                                    <input type="text" placeholder="请输入部们编号">
+                                    <input type="text" placeholder="请输入部们简称">
+                                </div>
+                                <div class="department_top_btn">
+                                    <button class="sureBtn">确定</button>
+                                    <button class="cancleBtn">取消</button>
+                                </div>
+                            </div>
+                            <div class="department_top_right">
+                                <button class="sureBtn">新增</button>
+                                <button class="sureBtn">修改</button>
+                                <button class="sureBtn">注销</button>
+                                <button class="sureBtn">维护群组</button>
+                            </div>
+                        </div>
+                        <table class="groups_table">
+                            <thead>
+                                <tr>
+                                    <th>组织机构简称</th>
+                                    <th>部门编码</th>
+                                    <th>应用属性</th>
+                                    <th>群组</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="department_list_title">+神华集团</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="department_list_body">
+                                    <td class="department_list_title">董事会</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>                           
+                                </tr>
+                                <tr class="department_list_body">
+                                    <td>+监事会</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>                           
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td class="department_list_title">+神华集团</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="department_list_body">
+                                    <td>秘书处</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>                           
+                                </tr>
+                                <tr class="department_list_body">
+                                    <td>监事会</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>                           
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td class="department_list_title">+神华集团</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>
+                                </tr>
+                                <tr class="department_list_body">
+                                    <td>秘书处</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>                           
+                                </tr>
+                                <tr class="department_list_body">
+                                    <td>监事会</td>
+                                    <td>49170</td>
+                                    <td>aaaaaa</td>
+                                    <td>董事会群组1、董事会群组2</td>
+                                    <td></td>                           
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>                  
+        </div>     
+        <!-- 遮罩层 -->
+        <div class="model_bg">
+            <div class="select_per_con">
+                <span class="close_icon">X</span>
+                <div class="per_title">人员选择</div>
+                <div class="per_con">
+                    <div class="per_con_part input_bg_gray1">
+                        <div class="clear">
+                            <div class="select_input">
+                                <img src="img/search.png" alt="">
+                                <input type="text" placeholder="请输入姓名" class="s_input">
+                            </div>
+                            <div class="select_btn">查询</div>
+                        </div>
+                        <div class="per_select">
+                           <div class="arrow"><img src="img/arrow.png" alt="">神华集团</div>
+                           <ul class="sel_title">
+                                <li>董事会</li>
+                                <li>监事会</li>
+                                <li class="arrow">办事处</li>
+                                <ul class="sel_title1">
+                                    <li>综合管理处</li>
+                                    <li>秘书处</li>
+                                </ul>
+                           </ul>
+                           <div class="arrow"><img src="img/arrow.png" alt="">神华集团</div>
+                           <ul class="sel_title">
+                                <li>董事会</li>
+                                <li>监事会</li>
+                                <li class="arrow">办事处</li>
+                                <ul class="sel_title1">
+                                    <li>综合管理处</li>
+                                    <li>秘书处</li>
+                                </ul>
+                           </ul>
+                        </div>
+                    </div>
+                    <div class="per_con_part myborder">
+                        <div class="orderBy_bg">
+                            <div class="orderBy_btn orderBy_bg_border">
+                                按职位
+                                <div class="order_icon">
+                                    <img src="img/order_icon1.png" alt="" class="order_icon1">
+                                    <img src="img/order_icon2.png" class="order_icon1 order_icon2">
+                                </div>
+                            </div>
+                            <div class="orderBy_btn">
+                                按音序
+                                <div class="order_icon">
+                                    <img src="img/order_icon1.png" alt="" class="order_icon1">
+                                    <img src="img/order_icon2.png" class="order_icon1 order_icon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="name_box">
+                            <ul class="name_list">
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                            </ul>
+                            <div class="order_ico">
+                                <div class="order_icon3"><img src="img/order_icon3.png" alt=""></div>
+                                <div class="order_icon3"><img src="img/order_icon4.png" alt=""></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="per_con_part">
+                        <div class="name_box">
+                            <ul class="name_list">
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                                <li>张三</li>
+                            </ul>
+                            <div class="order_ico">
+                                <div class="order_icon3"><img src="img/order_icon3.png" alt=""></div>
+                                <div class="order_icon3"><img src="img/order_icon4.png" alt=""></div>
+                            </div>
+                        </div>
+                        <div class="per_button">
+                            <button class="sureBtn">确定</button>
+                            <button class="cancleBtn">取消</button>
                         </div>
                     </div>
                 </div>
-            </div>                      
-        </div>     
+            </div>
+        </div>
     </div>
     <script src="js/jquery-2.0.3.min.js"></script>
     <!-- <script src="js/axios.min.js"></script> -->

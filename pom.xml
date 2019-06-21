@@ -44,7 +44,7 @@
   
     <!-- 分发组件至远程仓库 -->
   	<distributionManagement>
-        <repository>
+        <!-- <repository>
             <id>nexus-releases</id>
             <name>releases</name>
             <url>http://192.168.226.130:8081/nexus/content/repositories/releases/</url>
@@ -53,7 +53,7 @@
             <id>nexus-snapshots</id>
             <name>snapshot</name>
             <url>http://192.168.226.130:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
+        </snapshotRepository> -->
     </distributionManagement>
     
     <repositories>

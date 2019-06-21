@@ -25,7 +25,7 @@ public abstract class AbstractController  extends AbstractBase {
 	 * 请求
 	 */
 	@Autowired
-	HttpServletRequest httpRequest;
+	public HttpServletRequest httpRequest;
 
 	
 	/**

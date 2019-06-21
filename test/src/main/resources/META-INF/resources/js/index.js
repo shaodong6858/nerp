@@ -1,25 +1,30 @@
-
-// new Vue({
-//     el:"#main",
-//     data:{
-        
-//     },
-//     methods: {
-//         login(){
-//                 var uname=this.uname;
-//                 var reg=/^1[345678]\d{9}$/
-//                 if(!reg.test(uname)){
-//                     $('.alertMag').html("用户名不正确");
-//             }
-//             axios.get("http://127.0.0.1:3000/login?uname="+uname).then(res=>{
-//                 if(res.data==1){
-//                    location.href="index.html";
-//                 }
-            
-//             })
-//         }
-//     }
-// })
+ new Vue({
+     el:"#main",
+     data:{
+    	 userInfo: null,
+    	 currentNavList: null
+     },
+     created () {
+        this.getUserInfo()
+       },
+     methods: {
+    	getUserInfo (){
+    			axios.get('system/user/info?empnumber=fwadmin')
+    			  .then((response) => {
+    				  var systemInfo = response.data.data;
+    				  this.userInfo = systemInfo;
+    				  for (var key in this.userInfo.navList){
+    					  this.currentNavList = this.userInfo.navList[key];
+    					  break;
+    				  }
+    			      console.log(systemInfo);
+    			  })
+    			  .catch((error) => {
+    			      console.log(error);
+    			  });
+    		}
+     }
+ })
 
 
 // 时间
@@ -58,6 +63,20 @@ function nav(){
         }
     });
 }
+// 导航右侧选项卡
+function navRight(){
+    $(".right_tab_con:not(:first)").hide();
+    $('.nav_list li').click(function(){
+　　　　 var index = $(this).index();
+        $(".right_tab_con").hide().eq(index).show();
+    })
+}
+
+$(".right_tab_con:not(:first)").hide();
+    var index = $(this).index();
+    $('.nav_list li').click(function(){
+        $(".right_tab_con").hide().eq(index).show();
+    })
 // 我的待办
 function myHandle(){
     var tableLi=$(".table_left_list>li");
@@ -76,14 +95,55 @@ function myLocation(){
             $('.location').text('');
             $('.location').text(($(this).text())+">");
         })
-        $()
+}
+//左侧导航选项卡
+function leftNavtab(){
+    $(".con_right_tab:not(:first)").hide();
+    $(".system_con:not(:first)").hide();
+    $('.panel-body ul li').click(function(){
+        $(this).addClass('leftActive').siblings().removeClass('leftActive');
+　　　　 var index = $(this).index();
+        $(".con_right_tab").hide().eq(index).show();
+        $(".system_con").hide().eq(index).show();
+    })
+}
+// 选择人员
+function selectPer(){
+    $('.select_person').click(function(){
+         $('.model_bg').show();
+        //  $(".model_bg").fadeIn(3000);
+    })
+    $('.close_icon').click(function(){
+        $('.model_bg').hide();
+    })
+    // 选择人员折叠
+    $('.arrow').click(function(){
+        $(this).find('img').toggleClass('icon_transform')
+        $(this).next().slideToggle();
+        $('.nav_con').not($(this).next()).hide();
+    })
+    // 部门管理折叠
+    $('.department_list_title').click(function(){
+        $(this).parent().siblings().slideToggle();
+        // $('.nav_con').not($(this).next()).hide();
+    })
 }
 
+// $(document).click(function(){
+//     $('.model_bg').css('display','none');
+// })
 window.onload=function(){
     on();
     nav();
     myHandle();
     myLocation();
+    leftNavtab();
+    navRight();
+    selectPer();
 }
+// sTop = $('.con').offset().top;//169
+// aTop=$(document).height;
+// console.log(aTop);
+// $('.con_leftnav').height(aTop-sTop);
 
 
