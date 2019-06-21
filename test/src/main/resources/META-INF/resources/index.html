@@ -61,13 +61,13 @@
                     <li><a href="#publicManage" data-toggle="tab">公共信息</a></li>
                     <li><a href="#businessManage" data-toggle="tab">IT业务审批</a></li>
                     <li><a href="#systemManage" data-toggle="tab">系统管理</a></li> -->
-                    <li v-for="(val,key,index) in userInfo.navList" :class="{'active':index===0}"><a href="" data-toggle="tab">{{key}}</a></li>
+                    <li v-for="(val,key,index) in topNavList" :class="{'active':index===0}" @click="navItemClick(key)"><a href="" data-toggle="tab">{{(key)}}</a></li>
                     
                 </ul>
             </div>   
             <div class="navBtn">
-                <img class="nav_left_click disabled" src="img/navLeft.png">
-                <img class="nav_right_click" src="img/navRight.png">
+                <img class="nav_left_click disabled" @click="navLeftClick" src="img/navLeft.png">
+                <img class="nav_right_click" @click="navRightClick" src="img/navRight.png">
             </div>      
             <!-- 导航右边搜索 -->
             <div class="nav_search">
@@ -90,11 +90,11 @@
                                     href="#collapseOne" hidefocus="true">
                                         <img src="img/leftnavIcon1.png" alt="" class="topIcon">
                                         {{item.app.appName}}
-                                        <img src="img/gtBottom.png" alt="">
+                                        <!-- <img src="img/gtBottom.png" alt=""> -->
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
+                            <!-- <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <ul>
                                         <li class="leftActive"><img src="img/gtsmall.png" alt="">我的待办</li>
@@ -105,7 +105,7 @@
                                         <li><img src="img/gtsmall.png" alt="">我的办结</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -123,7 +123,8 @@
                     <!-- 我的待办 -->
                     <div class="con_right_tab">
                         <div class="con_right_table">
-                            <ul class="table_left_list">
+                            <ul class="ta
+                            ble_left_list">
                                 <li class="tableactive">我的待办</li>
                                 <li>个人日程</li>
                                 <li>公告</li>
@@ -215,7 +216,7 @@
                     IT业务审批
                 </div>
                 <!-- 系统管理 -->
-                <div class="right_tab_con">
+                <div class="right_tab_con  xitongguanli">
                     <!-- 部门 -->
                     <div class="system_con">
                        <div class="system_title">部门信息维护</div>
@@ -268,7 +269,7 @@
                             <div class="system_input input_width">
                                 <span class="sys_title">部门领导:</span>
                                 <input type="text" placeholder="" class="sys_input sys_width1">
-                                <span class="select_person">选择人员</span>
+                                <span class="select_person" @click="showSelectUser">选择人员</span>
                             </div>
                             <div class="system_input input_width">
                                 <span class="sys_title">备注:</span>
@@ -342,7 +343,7 @@
                                     <input type="text" placeholder="" class="groups_table1_input ">
                                     <img src="img/sysIcon.png" alt="">        
                                     <input type="text" placeholder="" class="groups_table1_input ">
-                                    <span class="select_person">选择人员</span>
+                                    <span class="select_person" @click="showSelectUser">选择人员</span>
                                     <input type="text" placeholder="" class="groups_table1_input ">
                                 </div>
                             </div>
@@ -455,7 +456,7 @@
         <!-- 遮罩层 -->
         <div class="model_bg">
             <div class="select_per_con">
-                <span class="close_icon">X</span>
+                <span class="close_icon" @click="closeSelectUser">X</span>
                 <div class="per_title">人员选择</div>
                 <div class="per_con">
                     <div class="per_con_part input_bg_gray1">

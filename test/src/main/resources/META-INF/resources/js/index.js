@@ -1,11 +1,24 @@
- new Vue({
+window.onload=function(){
+} 
+
+new Vue({
      el:"#main",
      data:{
     	 userInfo: null,
-    	 currentNavList: null
+    	 topNavList: null,
+    	 currentNavList: null,
+    	 moved:0
      },
-     created () {
-        this.getUserInfo()
+     created() {
+    	 on();
+    	 nav();
+    	    myHandle();
+    	    myLocation();
+    	    leftNavtab();
+    	    navRight();
+    	    selectPer();
+        this.getUserInfo();
+       
        },
      methods: {
     	getUserInfo (){
@@ -13,15 +26,53 @@
     			  .then((response) => {
     				  var systemInfo = response.data.data;
     				  this.userInfo = systemInfo;
-    				  for (var key in this.userInfo.navList){
-    					  this.currentNavList = this.userInfo.navList[key];
-    					  break;
+    				  if ( this.userInfo !== null){
+    					  this.topNavList =  this.userInfo.navList;
+    					  for (var key in this.userInfo.navList){
+    						  this.currentNavList = this.topNavList[key];
+    						  break;
+    					  }
+    				  } 
+    				  $(".nav_left_click").addClass("disabled");
+    				  if(this.moved>=navLi.length-7){
+                          $(".nav_right_click").addClass("disabled");
     				  }
     			      console.log(systemInfo);
     			  })
     			  .catch((error) => {
     			      console.log(error);
     			  });
+    		},
+    		showSelectUser(){
+    			 $('.model_bg').show();
+    		},
+    		closeSelectUser(){
+    			$('.model_bg').hide();
+    		},
+    		navItemClick(key){
+    			 this.currentNavList = this.topNavList[key];
+    		},
+    		navRightClick(e){
+    			let navLi=$('.nav_list>li');
+    			if(!$(".nav_right_click").is(".disabled")){
+                    this.moved++;
+                    $('.nav_list').css("margin-left",-106*this.moved);
+                    $('.nav_left_click').removeClass("disabled");
+                    if(this.moved==navLi.length-7){
+                            $(".nav_right_click").addClass("disabled");
+                    }
+                }
+    		},
+    		navLeftClick(e){
+    			let navLi=$('.nav_list>li');
+    			 if(!$(".nav_left_click").is(".disabled")){
+    	                this.moved--;
+    	                $('.nav_list').css("margin-left",-106*this.moved);
+    	                $('.nav_right_click').removeClass("disabled");
+    	                if(this.moved==0){
+    	                    $(".nav_left_click").addClass("disabled");
+    	                }
+    	            }
     		}
      }
  })
@@ -65,7 +116,8 @@ function nav(){
 }
 // 导航右侧选项卡
 function navRight(){
-    $(".right_tab_con:not(:first)").hide();
+    $(".right_tab_con").hide();
+    $(".xitongguanli").show();
     $('.nav_list li').click(function(){
 　　　　 var index = $(this).index();
         $(".right_tab_con").hide().eq(index).show();
@@ -98,7 +150,7 @@ function myLocation(){
 }
 //左侧导航选项卡
 function leftNavtab(){
-    $(".con_right_tab:not(:first)").hide();
+    $(".con_right_tab").hide();
     $(".system_con:not(:first)").hide();
     $('.panel-body ul li').click(function(){
         $(this).addClass('leftActive').siblings().removeClass('leftActive');
@@ -132,15 +184,7 @@ function selectPer(){
 // $(document).click(function(){
 //     $('.model_bg').css('display','none');
 // })
-window.onload=function(){
-    on();
-    nav();
-    myHandle();
-    myLocation();
-    leftNavtab();
-    navRight();
-    selectPer();
-}
+
 // sTop = $('.con').offset().top;//169
 // aTop=$(document).height;
 // console.log(aTop);
