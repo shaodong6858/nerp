@@ -103,7 +103,7 @@
 /* 导航结束 */
 .con{
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     display: flex;
 }
 /* 左侧导航开始 */
@@ -112,11 +112,11 @@
 }
 .tab_content{
     width: 185px;
-    height: 100%;
+    /* height: 100%; */
 }
 .con_leftnav{ 
-    height: 100%;
-    overflow:auto;
+    /* height: 100%; */
+    /* overflow:auto; */
     padding: 0;
     margin: 0;
     background: url('../img/nav_bg.png') no-repeat;
@@ -168,6 +168,7 @@
 /* 左侧导航结束 */
 .con_right{
     width:100%;
+    overflow-y: scroll;
     padding: 10px;
     background: #f9f9f9;
 }
@@ -451,9 +452,6 @@
     margin-left: 16%;
 }
 /* 群组内容 */
-.system_con{
-    /* border: 1px solid #000; */
-}
 .groups_con{
     width: 100%;
     margin-top: 20px;
@@ -542,3 +540,74 @@
 .groups_table tbody .department_list_body td:first-child{
     padding-left: 20px;
 }
+/* 用户信息 */
+.user_con{
+    width: 90%;
+    margin: 0 auto;
+}
+.user_con::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.user_btn{
+    padding-left: 86%;
+}
+.user_left{
+    width: 14%;
+    background: #f9f9f9;
+    margin: 0;
+    float: left;
+}
+.user_right{
+    width: 86%;
+    float: right;
+    padding: 20px 0;
+    background: #fff;
+}
+.user_right::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.user_table{
+    width: 100%;
+   padding-bottom: 50px;
+}
+.user_table thead tr th{
+    background: #fff;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding: 4px 0;
+}
+.user_table tbody tr td{
+    text-align: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+}
+.user_table tbody tr td:nth-child(even){
+    background: #f9f9f9;
+}
+/* 页码 */
+.myPage{
+    display: block;
+    clear: both;
+    text-align: right;
+    color: #797979;
+    font-size: 12px;
+    padding: 20px 20px 20px 0;
+}
+.myPage_margin{
+    margin: 0 20px;
+}
+.myPage img{
+    vertical-align: middle;
+    padding: 0px 4px;   
+}
+.page_input{
+    width: 10px;
+    height: 10px;
+}
+
+

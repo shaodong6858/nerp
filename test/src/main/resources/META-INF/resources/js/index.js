@@ -1,4 +1,5 @@
 window.onload=function(){
+	
 } 
 
 new Vue({
@@ -7,7 +8,8 @@ new Vue({
     	 userInfo: null,
     	 topNavList: null,
     	 currentNavList: null,
-    	 moved:0
+    	 moved:0,
+    	 unitList: null
      },
      created() {
     	 on();
@@ -18,9 +20,21 @@ new Vue({
     	    navRight();
     	    selectPer();
         this.getUserInfo();
-       
+        	this.initCass();
        },
      methods: {
+    	 initCass () {
+    		 var height=$(window).height();
+    		    console.log($('.con_right').offset())
+    		   var sTop = $('.con_right').offset().top;//169
+    		    var h=height-sTop;
+    		    $(window).resize(function(){
+    		        location.reload()
+    		    });
+    		    $('.con_leftnav').height(h);
+    		    var lheight=$('.tab_content').height();
+    		    $('.con_right').height(lheight-20);
+    	 },
     	getUserInfo (){
     			axios.get('system/user/info')
     			  .then((response) => {
@@ -48,9 +62,13 @@ new Vue({
     				if (item.appPath != null && $('#'+item.appPath) != null){
     					$(".right_tab_con .system_con").hide();
     					$('#'+item.appPath).show();
+    					this[$('#'+item.appPath).data("initclick")]();
     				}
     				console.log(item.appName);
     			}
+    		},
+    		initBumenguanliClick(){
+    			console.log("初始化部门管理");
     		},
     		showSelectUser(){
     			 $('.model_bg').show();
