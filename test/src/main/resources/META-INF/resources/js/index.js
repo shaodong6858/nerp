@@ -9,7 +9,24 @@ new Vue({
     	 topNavList: null,
     	 currentNavList: null,
     	 moved:0,
-    	 unitList: null
+    	 unitList: null,
+    	 unitTreetable: null,
+    	 unitSearchFrom: {
+    		 unitDeptcode: '',
+    		 unitName:''
+    	 },
+    	 updateUnitFromData: {
+    		 unitId: '',
+    		 unitDeptcode: '',
+    		 unitMdmcode:'',
+    		 unitFullname:'',
+    		 unitName:'',
+    		 unitBusinesstype:'',
+    		 unitParentcode: '',
+    		 unitAddress: '',
+    		 unitDeptleader:'',
+    		 unitComment: ''
+    	 }
      },
      created() {
     	 on();
@@ -21,8 +38,11 @@ new Vue({
     	    selectPer();
         this.getUserInfo();
         	this.initCass();
+        	this.initTreeTable();
        },
      methods: {
+    	 initTreeTable(){
+    	 },
     	 initCass () {
     		 var height=$(window).height();
     		    console.log($('.con_right').offset())
@@ -36,7 +56,7 @@ new Vue({
     		    $('.con_right').height(lheight-20);
     	 },
     	getUserInfo (){
-    			axios.get('system/user/info')
+    			axios.get('system/user/info?empnumber=00100001')
     			  .then((response) => {
     				  var systemInfo = response.data.data;
     				  this.userInfo = systemInfo;
@@ -69,6 +89,147 @@ new Vue({
     		},
     		initBumenguanliClick(){
     			console.log("初始化部门管理");
+   			 this.unitTreetable= $('#unitTreeTable').bootstrapTreeTable({
+//    			 toolbar: "#unitTreeTableToolbar",    //顶部工具条
+                 expandColumn : 1,            // 在哪一列上面显示展开按钮
+                 id:'unitDeptcode',
+                 parentId: 'unitParentcode',                                       // 用于设置父子关系
+                 showColumns: false,                                          // 是否显示内容列下拉框
+                 showRefresh: false, 
+//                 type: "GET",                                                // 请求数据的ajax类型
+//                 url: 'system/unit/all',                                                  // 请求数据的ajax的url
+//                 ajaxParams: {unitParentcode: '1'},  
+                 columns:[{
+                     checkbox: true
+                 },{
+                     title: '组织机构简称',
+                     field: 'unitName',
+                     visible: true
+                 },{
+                     title: '部门编码',
+                     field: 'unitDeptcode'
+                 },{
+                     title: '应用属性',
+                     field: 'unitSitename'
+                 },{
+                     title: '群组',
+                     field: 'unitSitename',
+                     formatter: function(value,row, index) {
+                         return '董事会，秘书会';
+                     }
+                 },{
+                     title: '备注',
+                     field: 'unitComment'
+                 }],
+                 onDblClickRow: (row, $element)=>{
+                	 console.log(row);
+                	 axios.get('system/unit/all?unitParentcode='+row.unitDeptcode)
+         			  .then((response) => {
+         				  this.unitList = response.data.data;
+         				$('#unitTreeTable').bootstrapTreeTable('appendData',this.unitList);
+         			      console.log(this.unitList);
+         			  })
+         			  .catch((error) => {
+         			      console.log(error);
+         			  });
+                 }
+    		 })
+    		 if (this.unitList == null || this.unitList.length===0){
+    			 $('#unitTreeTable').bootstrapTreeTable('refresh');
+    			 axios.get('system/unit/all?unitParentcode=1')
+    			 .then((response) => {
+    				 this.unitList = response.data.data;
+    				 $('#unitTreeTable').bootstrapTreeTable('appendData',this.unitList);
+    				 console.log(this.unitList);
+    			 })
+    			 .catch((error) => {
+    				 console.log(error);
+    			 });    			 
+    		 }
+    		},
+    		seachUnitFromTj(){
+    			 $('#unitTreeTable').bootstrapTreeTable('refresh');
+    			 axios.get(`system/unit/all?${param(this.unitSearchFrom)}`)
+    			 .then((response) => {
+    				 this.unitList = response.data.data;
+    				 $('#unitTreeTable').bootstrapTreeTable('appendData',this.unitList);
+    				 console.log(this.unitList);
+    			 })
+    			 .catch((error) => {
+    				 console.log(error);
+    			 });
+    		},
+    		showUpdateUnit(){
+    			let selected = $('#unitTreeTable').bootstrapTreeTable('getSelections');
+    			console.log(selected);
+    			if (selected.length ===1 ) {
+    				this.updateUnitFromData = selected[0];
+    				layui.use('layer', function(){
+      				  updateUnitlayer = layui.layer;
+      				updateUnitOpen = updateUnitlayer.open({
+      					  title: '修改部门信息',
+      					  type: 1,
+      					  content: $('#bumenxinxiweihu'),
+      					  area: ['800px']
+      				  });
+      				}); 
+    			} else {
+    				layui.use('layer', () => {
+        				  var layer = layui.layer;
+        				  layer.alert('只能选择一条部门编辑！');
+        				}); 
+    				
+    			}
+    			
+    		},
+    		subimtUnitData(){
+    			if (this. updateUnitFromData.unitId != '') {
+    				axios.put(`system/unit/${this. updateUnitFromData.unitId}`,param(this. updateUnitFromData),{headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+       			 .then((response) => {
+       				 console.log(this.unitList);
+       				this. updateUnitFromData= {
+        					unitId: '',
+        	    		 unitDeptcode: '',
+        	    		 unitMdmcode:'',
+        	    		 unitFullname:'',
+        	    		 unitName:'',
+        	    		 unitBusinesstype:'',
+        	    		 unitParentcode: '',
+        	    		 unitAddress: '',
+        	    		 unitDeptleader:'',
+        	    		 unitComment: ''
+        	    	 };
+        			updateUnitlayer.close(updateUnitOpen);
+        			 $('#unitTreeTable').bootstrapTreeTable('refresh');
+        			 axios.get('system/unit/all?unitParentcode=1')
+        			 .then((response) => {
+        				 this.unitList = response.data.data;
+        				 $('#unitTreeTable').bootstrapTreeTable('appendData',this.unitList);
+        				 console.log(this.unitList);
+        			 })
+        			 .catch((error) => {
+        				 console.log(error);
+        			 });
+       			 })
+       			 .catch((error) => {
+       				 console.log(error);
+       			 });    			 
+    			}
+    		},
+    		closeUpdateUnit(){
+    			this. updateUnitFromData= {
+    					unitId: '',
+    	    		 unitDeptcode: '',
+    	    		 unitMdmcode:'',
+    	    		 unitFullname:'',
+    	    		 unitName:'',
+    	    		 unitBusinesstype:'',
+    	    		 unitParentcode: '',
+    	    		 unitAddress: '',
+    	    		 unitDeptleader:'',
+    	    		 unitComment: ''
+    	    	 };
+    			updateUnitlayer.close(updateUnitOpen);
     		},
     		showSelectUser(){
     			 $('.model_bg').show();
@@ -103,7 +264,25 @@ new Vue({
     		}
      }
  })
-
+function cleanArray(actual) {
+	   const newArray = []
+	   for (let i = 0; i < actual.length; i++) {
+	     if (actual[i]) {
+	       newArray.push(actual[i])
+	     }
+	   }
+	   return newArray
+	 }
+function param(json) {
+	   if (!json) return ''
+	   return cleanArray(Object.keys(json).map(key => {
+	     if (json[key] === undefined || json[key] === null || json[key]==='') return ''
+	     return encodeURIComponent(key) + '=' +
+	            encodeURIComponent(json[key])
+	   })).join('&')
+	 }
+var updateUnitlayer  = null;
+var updateUnitOpen  = null;
 
 // 时间
 function on() {

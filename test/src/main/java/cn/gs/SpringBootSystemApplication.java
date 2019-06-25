@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import net.unicon.cas.client.configuration.EnableCasClient;
 import tk.mybatis.spring.annotation.MapperScan;
 
-@EnableCasClient
+//@EnableCasClient
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableScheduling
 @MapperScan("cn.gs.**.repository")

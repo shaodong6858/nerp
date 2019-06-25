@@ -5,6 +5,7 @@ import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,6 +43,12 @@ public class OrgUnitController  extends AbstractBaseController<OrgUnit>{
 	
 	@GetMapping("all")
 	public ResponseEntity<JsonResult> findListAll(OrgUnit unit){
+		return success(orgUnitService.getListAll(unit));
+	}
+	@GetMapping("tree/{id}")
+	public ResponseEntity<JsonResult> findListByTreeId(@PathVariable String id){
+		OrgUnit unit = new OrgUnit();
+		unit.setUnitParentcode(id);
 		return success(orgUnitService.getListAll(unit));
 	}
 }

@@ -10,8 +10,14 @@
     <!-- 公共样式 -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="bootstrap-treetable/bootstrap-treetable.css" type="text/css" />
+    <script src="layui/layui.js"></script>
     <script src="js/vue.js"></script>
     <script src="js/axios.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bootstrap-treetable/bootstrap-treetable.js"></script>
     <title>办公自动化系统</title>
 </head>
 <body>
@@ -126,21 +132,21 @@
                        <div class="system_table">
                             <div class="system_input input_padding">
                                 <span class="sys_title">机构编号:</span>
-                                <input type="text" placeholder="49529" class="sys_input input_bg_gray">
+                                <input type="text" class="sys_input input_bg_gray" v-model="updateUnitFromData.unitDeptcode">
                             </div>
                             <div class="system_input">
                                 <span class="sys_title">MDM编号:</span>
-                                <input type="text" placeholder="******" class="sys_input">
+                                <input type="text" class="sys_input" v-model="updateUnitFromData.unitMdmcode">
                                 <img src="img/sysIcon.png" alt="">
                             </div>
                             <div class="system_input">
                                 <span class="sys_title">机构名称:</span>
-                                <input type="text" placeholder="运营维护部" class="sys_input">
+                                <input type="text" class="sys_input" v-model="updateUnitFromData.unitFullname">
                                 <img src="img/sysIcon.png" alt="">
                             </div>
                             <div class="system_input">
                                 <span class="sys_title">机构简称:</span>
-                                <input type="text" placeholder="运营维护部" class="sys_input">
+                                <input type="text" class="sys_input"  v-model="updateUnitFromData.unitName">
                                 <img src="img/sysIcon.png" alt="">
                             </div>
                             <div class="system_input input_padding">
@@ -155,33 +161,33 @@
                             </div>
                             <div class="system_input input_padding">
                                 <span class="sys_title">上级部门:</span>
-                                <input type="text" placeholder="神华集团" class="sys_input input_bg_gray">
+                                <input type="text"  class="sys_input input_bg_gray" v-model="updateUnitFromData.unitParentcode">
                             </div>
                             <div class="system_input input_padding">
                                 <span class="sys_title">上级机构编号:</span>
-                                <input type="text" placeholder="49178" class="sys_input input_bg_gray">
+                                <input type="text" class="sys_input input_bg_gray" v-model="updateUnitFromData.unitParentcode">
                             </div>
                             <div class="system_input input_padding">
                                 <span class="sys_title">上级MDM机构编号:</span>
-                                <input type="text" placeholder="49178" class="sys_input input_bg_gray">
+                                <input type="text" class="sys_input input_bg_gray" v-model="updateUnitFromData.unitParentcode">
                             </div>
                             <div class="system_input input_width">
                                 <span class="sys_title">机构位置:</span>
-                                <input type="text" placeholder="北京市东城区鼓楼大街26号" class="sys_input sys_width">
+                                <input type="text" class="sys_input" v-model="updateUnitFromData.unitAddress">
                             </div>
                             <div class="system_input input_width">
                                 <span class="sys_title">部门领导:</span>
-                                <input type="text" placeholder="" class="sys_input sys_width1">
+                                <input type="text" placeholder="" class="sys_input sys_width1" v-model="updateUnitFromData.unitDeptleader">
                                 <span class="select_person" @click="showSelectUser">选择人员</span>
                             </div>
                             <div class="system_input input_width">
                                 <span class="sys_title">备注:</span>
-                                <input type="text" placeholder="" class="sys_input sys_width1">
+                                <input type="text" placeholder="" class="sys_input sys_width1" v-model="updateUnitFromData.unitComment">
                             </div>
                        </div>
                        <div class="per_button per_button1">
-                            <button class="sureBtn">确定</button>
-                            <button class="cancleBtn">取消</button>
+                            <button class="sureBtn" @click="subimtUnitData">确定</button>
+                            <button class="cancleBtn" @click="closeUpdateUnit">取消</button>
                         </div>
                     </div>
                     <!-- 群组 -->
@@ -254,26 +260,26 @@
                     </div>
                     <!-- 部们管理 -->
                     <div class="system_con" id="bumenguanli" data-initclick="initBumenguanliClick">
-                        <div class="department_con">
+                        <div class="department_con" id="unitTreeTableToolbar">
                             <div class="de_left">
                                 <div class="department_top_left">
-                                    <input type="text" placeholder="请输入部们编号">
-                                    <input type="text" placeholder="请输入部们简称">
+                                    <input type="text" placeholder="请输入部们编号"  v-model="unitSearchFrom.unitDeptcode">
+                                    <input type="text" placeholder="请输入部们简称"  v-model="unitSearchFrom.unitName">
                                 </div>
                                 <div class="department_top_btn">
-                                    <button class="sureBtn">确定</button>
+                                    <button class="sureBtn" @click="seachUnitFromTj">确定</button>
                                     <button class="cancleBtn">取消</button>
                                 </div>
                             </div>
                             <div class="department_top_right">
                                 <button class="sureBtn">新增</button>
-                                <button class="sureBtn">修改</button>
+                                <button class="sureBtn" @click="showUpdateUnit">修改</button>
                                 <button class="sureBtn">注销</button>
                                 <button class="sureBtn">维护群组</button>
                             </div>
                         </div>
-                        <table class="groups_table">
-                            <thead>
+                        <table id="unitTreeTable" class="groups_table">
+                          <!--   <thead>
                                 <tr>
                                     <th>组织机构简称</th>
                                     <th>部门编码</th>
@@ -282,13 +288,13 @@
                                     <th>备注</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody v-for="item in unitList">
                                 <tr>
-                                    <td class="department_list_title">+神华集团</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
+                                    <td class="department_list_title">+{{item.unitName}}</td>
+                                    <td>{{item.unitDeptcode}}</td>
+                                    <td>{{item.unitSitename}}</td>
                                     <td>董事会群组1、董事会群组2</td>
-                                    <td></td>
+                                    <td>{{item.unitComment}}</td>
                                 </tr>
                                 <tr class="department_list_body">
                                     <td class="department_list_title">董事会</td>
@@ -304,53 +310,7 @@
                                     <td>董事会群组1、董事会群组2</td>
                                     <td></td>                           
                                 </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td class="department_list_title">+神华集团</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
-                                    <td>董事会群组1、董事会群组2</td>
-                                    <td></td>
-                                </tr>
-                                <tr class="department_list_body">
-                                    <td>秘书处</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
-                                    <td>董事会群组1、董事会群组2</td>
-                                    <td></td>                           
-                                </tr>
-                                <tr class="department_list_body">
-                                    <td>监事会</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
-                                    <td>董事会群组1、董事会群组2</td>
-                                    <td></td>                           
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td class="department_list_title">+神华集团</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
-                                    <td>董事会群组1、董事会群组2</td>
-                                    <td></td>
-                                </tr>
-                                <tr class="department_list_body">
-                                    <td>秘书处</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
-                                    <td>董事会群组1、董事会群组2</td>
-                                    <td></td>                           
-                                </tr>
-                                <tr class="department_list_body">
-                                    <td>监事会</td>
-                                    <td>49170</td>
-                                    <td>aaaaaa</td>
-                                    <td>董事会群组1、董事会群组2</td>
-                                    <td></td>                           
-                                </tr>
-                            </tbody>
+                            </tbody> -->
                         </table>
                     </div>
                     <!-- 用户信息 -->
@@ -544,10 +504,10 @@
             </div>
         </div>
     </div>
-    <script src="js/jquery-2.0.3.min.js"></script>
+    <!-- <script src="js/jquery-2.0.3.min.js"></script> -->
     <!-- <script src="js/axios.min.js"></script> -->
     <!-- <script src="js/vue.js"></script> -->
-    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
     <script src="js/index.js"></script>
 </body>
 </html>

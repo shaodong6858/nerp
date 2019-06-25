@@ -23,6 +23,7 @@ import cn.gs.system.repository.OrgUnitMapper;
 import cn.gs.system.repository.OrgUserMapper;
 import cn.gs.system.repository.OrgUsraccountMapper;
 import cn.gs.system.repository.SysNavMapper;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class OrgUnitService extends AbstractBaseService<OrgUnit> {
@@ -35,5 +36,20 @@ public class OrgUnitService extends AbstractBaseService<OrgUnit> {
 		// TODO Auto-generated method stub
 		return orgUnitMapper;
 	}
-	
+	public List<OrgUnit> getAllBySearch(OrgUnit unit){
+		Example  exampl = new Example(OrgUnit.class);
+		if (!StringUtils.isEmpty(unit.getUnitDeptcode())) {
+			exampl.createCriteria()
+			.andLike("unitDeptcode", unit.getUnitDeptcode());
+		}
+		if (!StringUtils.isEmpty(unit.getUnitName())) {
+			exampl.createCriteria()
+			.andLike("unitName", unit.getUnitName());
+		}
+		if (!StringUtils.isEmpty(unit.getUnitParentcode())) {
+			exampl.createCriteria()
+			.andEqualTo("unitParentcode", unit.getUnitParentcode());
+		}
+		return orgUnitMapper.selectByExample(exampl);
+	}
 }

@@ -238,16 +238,21 @@
 }
 .system_input{
     margin: 10px 0;
+    width: 50%;
+    display: inline-table;
 }
 .sys_title{
-    width:130px;
+    width: 120px;
     display: inline-block;
-    text-align:right;
-    padding-right: 20px;
+    text-align: right;
+    padding-right: 10px;
+}
+.system_con{
+	    padding-bottom: 20px;
 }
 .sys_input{
-    width: 400px;
-    border:1px solid #e5e5e5;
+        width: 60%;
+    border: 1px solid #e5e5e5;
     outline: none;
     padding: 3px 0 3px 4px;
 }
@@ -255,7 +260,7 @@
     background: #eee;
 }
 .input_width{
-    width: 97%;
+      width: 100%;
 }
 .input_padding{
     padding-right: 8px;
@@ -425,8 +430,6 @@
    margin-top: 40%;
 }
 .per_button{
-    margin-left: 20%;
-    margin-top: 10%;
 }
 .sureBtn{
     color: #fff;
@@ -443,13 +446,11 @@
     padding: 4px 14px;
     outline: none;
     border-radius: 5px;
-    margin-left: 30%;
 }
 .per_button1{
-    margin-left: 80%;
+    text-align: center;
 }
 .cancleBtn{
-    margin-left: 16%;
 }
 /* 群组内容 */
 .groups_con{

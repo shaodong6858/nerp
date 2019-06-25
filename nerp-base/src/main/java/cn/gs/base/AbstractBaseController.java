@@ -67,7 +67,7 @@ public abstract class AbstractBaseController<T extends IBaseEntity>  extends Abs
 	 * @throws IllegalAccessException 
 	 */
 	@PutMapping("{id}")
-	public ResponseEntity<JsonResult> update(@PathVariable String id, T entity) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public ResponseEntity<JsonResult> update(@PathVariable Integer id, T entity) throws IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		setEntityId(entity, id);
 		int cont = getService().update(entity);
 		return entityResult(cont);
