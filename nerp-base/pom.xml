@@ -9,7 +9,7 @@
 	<artifactId>nerp-base</artifactId>
 
 	<properties>
-		<poi.version>4.0.0</poi.version>
+		<poi.version>4.1.1</poi.version>
 		<java.cas.client.version>3.5.0</java.cas.client.version>
 	</properties>
 	
